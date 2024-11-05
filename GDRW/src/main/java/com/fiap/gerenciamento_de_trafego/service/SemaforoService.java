@@ -21,6 +21,7 @@ public class SemaforoService {
 
     @Autowired
     private LogOperacaoRepository logOperacaoRepository;
+    private Long semaforoId;
 
     public List<Semaforo> getAllSemaforos() {
         return semaforoRepository.findAll();
@@ -68,5 +69,59 @@ public class SemaforoService {
         return logOperacaoRepository.save(log);
     }
 
-    // Métodos para atualizar e deletar Horário, EventoManutencao e LogOperacao também podem ser adicionados aqui
+    // Métodos para atualizar e deletar Horário
+
+    public Horario updateHorario(Long id, Horario horarioAtualizado) {
+        Horario horario = horarioRepository.findById(id).orElseThrow();
+        horario.setHoraInicio(horarioAtualizado.getHoraInicio());
+        horario.setHoraFim(horarioAtualizado.getHoraFim());
+        return horarioRepository.save(horario);
+    }
+
+    public boolean deleteHorario(Long id) {
+        if (horarioRepository.existsById(id)) {
+            horarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+// Métodos para atualizar e deletar EventoManutencao
+
+    public EventoManutencao updateEventoManutencao(Long id, EventoManutencao eventoAtualizado) {
+        EventoManutencao evento = eventoManutencaoRepository.findById(id).orElseThrow();
+        evento.setDescricao(eventoAtualizado.getDescricao());
+        evento.setDataEvento(eventoAtualizado.getDataEvento());
+        return eventoManutencaoRepository.save(evento);
+    }
+
+    public boolean deleteEventoManutencao(Long id) {
+        if (eventoManutencaoRepository.existsById(id)) {
+            eventoManutencaoRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+// Métodos para atualizar e deletar LogOperacao
+
+    public LogOperacao updateLogOperacao(Long id, LogOperacao logAtualizado) {
+        LogOperacao log = logOperacaoRepository.findById(id).orElseThrow();
+        log.setOperacao(logAtualizado.getOperacao());
+        log.setDataLog(logAtualizado.getDataLog());
+        return logOperacaoRepository.save(log);
+    }
+
+    public boolean deleteLogOperacao(Long id) {
+        if (logOperacaoRepository.existsById(id)) {
+            logOperacaoRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
+    public List<LogOperacao> getAllLogsOperacao(Long semaforoId) {
+        return logOperacaoRepository.findBySemaforoId(semaforoId)
+    }
 }
